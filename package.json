@@ -10,10 +10,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "truffle": "^4.1.0"
+    "truffle": "^4.1.0",
+    "truffle-hdwallet-provider": "0.0.3"
   },
   "dependencies": {
-    "npm": "^5.7.1",
     "zeppelin-solidity": "1.7.0"
   }
 }
