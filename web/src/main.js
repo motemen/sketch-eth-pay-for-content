@@ -90,7 +90,12 @@ PayForContent.deployed().then(function (instance) {
       {
         type: 'string',
         name: 'Origin',
-        value: location.origin
+        value: document.documentElement.getAttribute('data-origin'),
+      },
+      {
+        type: 'string',
+        name: 'CAUTION',
+        value: "Make sure that the Origin above matches the URL on your browser's address bar",
       },
     ];
 
@@ -115,7 +120,8 @@ PayForContent.deployed().then(function (instance) {
       })
       .then((res) => res.json())
       .then((data) => {
-        document.querySelector('#revealed-content').textContent = data.success ? data.content : '*FAILED*';
+        document.querySelector('#revealed-content').textContent
+          = data.success ? `REVEALED CONTENT: ${data.content}` : `*FAILED* ${data.message}`;
       });
     });;
   });

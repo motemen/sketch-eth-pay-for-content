@@ -29,10 +29,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app
+  .set('views', path.join(__dirname, 'views'))
+  .set('view engine', 'ejs')
   .use(bodyParser.urlencoded({ extended: false }))
   .use('/static', express.static(path.join(__dirname, 'dist')))
   .get('/v', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'v.html'))
+    res.render('v.ejs', { origin: ORIGIN })
   })
   .post('/r', (req, res) => {
     const from = req.body['from'];
@@ -44,6 +46,11 @@ app
         name: 'Origin',
         value: ORIGIN,
       },
+      {
+        type: 'string',
+        name: 'CAUTION',
+        value: "Make sure that the Origin above matches the URL on your browser's address bar",
+      },
     ];
 
     const sender = recoverTypedSignature({
@@ -54,7 +61,7 @@ app
     console.log(`recovered=${sender} from=${from}`);
 
     if (sender !== from) {
-      res.json({ success: false });
+      res.json({ success: false, message: 'invalid signature' });
       return;
     }
 
@@ -68,7 +75,7 @@ app
       res.json({ success: true, content: PROTECTED_CONTENT });
     }).catch((err) => {
       console.error(err);
-      res.json({ success: false });
+      res.json({ success: false, message: `${err}` });
     });
   })
   .listen(PORT, () => console.log(`server listening on ${PORT}`));
