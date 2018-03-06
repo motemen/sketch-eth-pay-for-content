@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "truffle": "truffle"
+    "truffle": "truffle",
+    "postinstall": "cd web && npm install"
   },
   "keywords": [],
   "author": "",
