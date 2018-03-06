@@ -122,6 +122,10 @@ PayForContent.deployed().then(function (instance) {
       .then((data) => {
         document.querySelector('#revealed-content').textContent
           = data.success ? `CONTENT REVEALED! ${data.content}` : `*FAILED* ${data.message}`;
+
+        if (window.opener) {
+          window.opener.postMessage(JSON.stringify(data), 'https://motemen.hatenablog.com');
+        }
       });
     });;
   });
