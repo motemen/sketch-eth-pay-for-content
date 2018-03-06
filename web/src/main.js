@@ -121,7 +121,7 @@ PayForContent.deployed().then(function (instance) {
       .then((res) => res.json())
       .then((data) => {
         document.querySelector('#revealed-content').textContent
-          = data.success ? `REVEALED CONTENT: ${data.content}` : `*FAILED* ${data.message}`;
+          = data.success ? `CONTENT REVEALED! ${data.content}` : `*FAILED* ${data.message}`;
       });
     });;
   });
