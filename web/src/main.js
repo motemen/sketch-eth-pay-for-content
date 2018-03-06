@@ -125,6 +125,7 @@ PayForContent.deployed().then(function (instance) {
 
         if (window.opener) {
           window.opener.postMessage(JSON.stringify(data), 'https://motemen.hatenablog.com');
+          window.close();
         }
       });
     });;
