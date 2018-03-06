@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "truffle": "truffle",
-    "postinstall": "cd web && npm install"
+    "heroku-postbuild": "cd web && npm install --no-production && npm run webpack -- --mode production"
   },
   "keywords": [],
   "author": "",
