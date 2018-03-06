@@ -12,22 +12,25 @@ const Web3 = require('web3');
 const { toBuffer } = require('ethereumjs-util');
 const { recoverTypedSignature } = require('eth-sig-util');
 
-const webpack = require('webpack');
-const webpackDevMiddleware = require('webpack-dev-middleware');
-
 const PayForContent = require('truffle-contract')(require(path.join(__dirname, '../build/contracts/PayForContent.json')));
 
-// const web3 = new Web3(new Web3.providers.HttpProvider(`https://ropsten.infura.io/${process.env.INFURA_KEY}`));
-const web3 = new Web3(new Web3.providers.HttpProvider(`http://localhost:7545`));
+const web3 = new Web3(new Web3.providers.HttpProvider(`https://ropsten.infura.io/${process.env.INFURA_KEY}`));
 
 const PROTECTED_CONTENT = process.env.PROTECTED_CONTENT || 'ぽっぽえ';
 
 PayForContent.setProvider(web3.currentProvider);
 
-express()
-  .use(webpackDevMiddleware(webpack({ ...require('./webpack.config.js'), context: __dirname }), { publicPath: '/static' }))
+const app = express()
+
+if (process.env.NODE_ENV !== 'production') {
+  const webpack = require('webpack');
+  const webpackDevMiddleware = require('webpack-dev-middleware');
+  app.use(webpackDevMiddleware(webpack({ ...require('./webpack.config.js'), context: __dirname }), { publicPath: '/static' }))
+}
+
+app
   .use(bodyParser.urlencoded({ extended: false }))
-  .use('/static', express.static('dist'))
+  .use('/static', express.static(path.join(__dirname, 'dist')))
   .get('/v', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'v.html'))
   })
